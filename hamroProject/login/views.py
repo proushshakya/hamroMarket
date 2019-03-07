@@ -7,6 +7,7 @@ from django.contrib.auth import login as auth_login, authenticate
 from login.forms import LoginForm, SignupForm
 
 from django.http import HttpResponse
+import datetime
 
 '''
 #csrf = Cross site request forgery
@@ -34,6 +35,7 @@ def signup(request):
 			user.save()
 			username = user.username
 			raw_password = signup.cleaned_data.get('password')
+			user = authenticate(username=username, password=raw_password)
 			if user is not None:
 				auth_login(request, user)
 				return redirect('home')
@@ -46,3 +48,22 @@ def signup(request):
 
 def home(request):
 	return render(request, 'home.html')
+
+def setsession(request):
+	request.session['name']='test'
+	request.session['address']='ktm'
+	return HttpResponse("session has been set.")
+
+def getsession(request):
+	name = request.session['name']
+	address = request.session['address']
+	return HttpResponse("Name: {0}, Address: {1}".format(name,address))
+
+def setcookie(request):
+	response = HttpResponse("Cookie has been set")
+	response.set_cookie('age', datetime.datetime.now())
+	return response
+
+def getcookie(request):
+	age = request.COOKIES['age']
+	return HttpResponse("age: {0}".format(age))

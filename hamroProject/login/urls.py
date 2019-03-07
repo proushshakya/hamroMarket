@@ -7,5 +7,9 @@ urlpatterns = [
 	path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
 	path('home', views.home, name='home'),
 	#path(''. views.login),
-	path('register/', views.signup, name='register')
+	path('register/', views.signup, name='register'),
+	path('setsession',views.setsession),
+	path('getsession',views.getsession),
+	path('getcookie',views.getcookie),
+	path('setcookie',views.setcookie)
 ]
