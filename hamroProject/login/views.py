@@ -38,7 +38,7 @@ def signup(request):
 			user = authenticate(username=username, password=raw_password)
 			if user is not None:
 				auth_login(request, user)
-				return redirect('home')
+				return redirect('show/')
 
 		return HttpResponse("Error while lregistering it")
 	else:
