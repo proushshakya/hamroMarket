@@ -2,7 +2,10 @@ from django.shortcuts import render, redirect
 from product.forms import ProductForm  
 from product.models import Product  
 from django.http import JsonResponse
-from product.models import Payment
+from rest_framework.views import APIView
+from .models import Payment
+
+from .serializers import PaymentSerializer, ProductSerializer
  
 def product(request):  
     if request.method == "POST":  
@@ -47,9 +50,29 @@ def raw_sql(request):
 def getjson(request):
 	return JsonResponse({'name':'broadway'})
 
+def get_products(request):
+	products = Product.objects.all()
+	serializer = ProductSerializer(products, many=True)
+	return JsonResponse(serializer.data, safe=False)
+
+class PaymentView(APIView):
+	def post(self, request):
+		serializer = PaymentSerializer(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return JsonResponse({'message':'Payment was Successful.'})
+		return JsonResponse({'message':'Payment was unsuccessful.'})
+
+	def get(self, request):
+		payments = Payment.objects.all()
+		serializer = PaymentSerializer(payments, many=True)
+		return JsonResponse(serializer.data, safe=False)
+
+'''
 def pay(request):
 	payment_serializer = PaymentSerializer(data = request.data)
 	if payment_serializer.is_valid():
 		payment_serializer.save()
 		return JsonResponse({'success': True})
 	return JsonResponse({'success': False})
+'''

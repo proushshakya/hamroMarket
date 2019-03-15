@@ -9,5 +9,6 @@ urlpatterns = [
     path('delete/<int:id>', views.destroy), 
     path('getjson', views.getjson),
     path('raw_sql', views.raw_sql),
-    path('pay', views.pay), 
+    path('api/get_products/', views.get_products, name="get_products"),
+    path('api/pay/', views.PaymentView.as_view(), name="pay"), 
 ]

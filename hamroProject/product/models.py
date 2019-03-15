@@ -16,5 +16,8 @@ class Payment(models.Model):
 	customer_id = models.CharField(max_length=20)
 	amount = models.IntegerField()
 
+	def __str__(self):
+		return "{} - {}".format(self.customer_id, self.amount)
+
 	class Meta:
 		db_table = "payments"
